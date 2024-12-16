@@ -1,0 +1,19 @@
+@import '../../styles/variables';
+
+.home {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.startButton {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: $primary-color; // variables.scss에서 정의된 변수
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}

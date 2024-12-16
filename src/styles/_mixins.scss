@@ -1,0 +1,7 @@
+// 코드 재사용성을 위한 믹스인.
+
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

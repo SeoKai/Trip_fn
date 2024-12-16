@@ -1,0 +1,28 @@
+.citySelect {
+  text-align: center;
+  margin-top: 20px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .cityItem {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e0e0e0;
+    }
+  }
+
+  p {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+  }
+}
