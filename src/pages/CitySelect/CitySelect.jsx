@@ -3,14 +3,20 @@ import { useNavigate } from "react-router-dom"; // useNavigate를 import
 import styles from "./CitySelect.module.scss"; // 스타일 import
 
 function CitySelect() {
-  const cities = ["도쿄", "오사카", "후쿠오카"];
-  const [selectedCity, setSelectedCity] = useState("");
-  const navigate = useNavigate(); // useNavigate 초기화
+  const cities = [
+    { regionId: 1, name: "도쿄" },
+    { regionId: 2, name: "오사카" },
+    { regionId: 3, name: "후쿠오카" },
+  ];
+
+  const [selectedCity, setSelectedCity] = useState(""); // selectedCity 상태 선언
+  const navigate = useNavigate();
 
   const handleCitySelect = (city) => {
-    setSelectedCity(city);
-    // 페이지 이동
-    navigate("/select-dates", { state: { city } }); // state를 통해 데이터 전달
+    setSelectedCity(city.name);
+    navigate("/select-dates", {
+      state: { regionId: city.regionId, cityName: city.name },
+    });
   };
 
   return (
@@ -20,11 +26,11 @@ function CitySelect() {
       <ul>
         {cities.map((city) => (
           <li
-            key={city}
-            className={styles.cityItem}
+            key={city.regionId}
             onClick={() => handleCitySelect(city)}
+            className={styles.cityItem}
           >
-            {city}
+            {city.name}
           </li>
         ))}
       </ul>

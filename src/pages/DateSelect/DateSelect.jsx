@@ -5,7 +5,8 @@ import styles from "./DateSelect.module.scss";
 function DateSelect() {
   const location = useLocation(); // 이전 페이지에서 전달된 state 받기
   const navigate = useNavigate(); // 다음 페이지로 이동을 위한 navigate
-  const selectedCity = location.state?.city; // 전달받은 도시 정보
+
+  const { regionId, cityName } = location.state;
 
   const [startDate, setStartDate] = useState(""); // 출발일 상태
   const [endDate, setEndDate] = useState(""); // 도착일 상태
@@ -24,9 +25,8 @@ function DateSelect() {
       return;
     }
 
-    // 다음 페이지로 이동하면서 출발일, 도착일, 선택된 도시 정보를 전달
     navigate("/plan-trip", {
-      state: { city: selectedCity, startDate, endDate },
+      state: { regionId, cityName, startDate, endDate },
     });
   };
 
@@ -34,7 +34,7 @@ function DateSelect() {
     <div className={styles.dateSelect}>
       <h1>출발일/도착일 선택</h1>
       <p>
-        선택된 도시: <strong>{selectedCity}</strong>
+        선택된 도시: <strong>{cityName}</strong>
       </p>
       <div className={styles.datePicker}>
         <div>

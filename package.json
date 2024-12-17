@@ -14,9 +14,7 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.0.2",
     "react-scripts": "5.0.1",
-    "resolve-url-loader": "^5.0.0",
-    "sass": "^1.83.0",
-    "sass-loader": "^16.0.4"
+    "resolve-url-loader": "^5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,5 +40,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.83.0",
+    "sass-loader": "^16.0.4"
   }
 }
