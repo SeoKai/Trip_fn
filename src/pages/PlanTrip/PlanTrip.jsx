@@ -6,12 +6,14 @@ import styles from "./PlanTrip.module.scss";
 
 function PlanTrip() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyCShblMMYThZxLOVypghTgG7XRwFpCL7RI",
+    googleMapsApiKey: "AIzaSyCShblMMYThZxLOVypghTgG7XRwFpCL7RI", // 여기에 실제 API 키 입력
   });
 
   const [allPlaces, setAllPlaces] = useState([]); // 전체 장소 데이터
   const [selectedPlaces, setSelectedPlaces] = useState([]); // 선택된 장소 목록
   const [center, setCenter] = useState({ lat: 35.6895, lng: 139.6917 }); // 지도 중심
+  const [selectedPlace, setSelectedPlace] = useState(null); // 마커 클릭된 장소
+  const [isModalOpen, setIsModalOpen] = useState(false); // 팝업 상태
 
   const location = useLocation();
   const city = location.state?.city;
@@ -35,7 +37,7 @@ function PlanTrip() {
   // 장소 추가 핸들러
   const handleAddPlace = (place) => {
     if (!selectedPlaces.some((p) => p.locationId === place.locationId)) {
-      setSelectedPlaces([...selectedPlaces, place]); // 장소 추가
+      setSelectedPlaces([...selectedPlaces, place]);
       setCenter({ lat: place.latitude, lng: place.longitude }); // 지도 중심 이동
     }
   };
@@ -45,6 +47,18 @@ function PlanTrip() {
     setSelectedPlaces(
       selectedPlaces.filter((p) => p.locationId !== locationId)
     );
+  };
+
+  // 마커 클릭 핸들러
+  const handleMarkerClick = (place) => {
+    setSelectedPlace(place);
+    setIsModalOpen(true);
+  };
+
+  // 팝업 닫기 핸들러
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedPlace(null);
   };
 
   if (!isLoaded) return <p>Loading...</p>;
@@ -118,10 +132,43 @@ function PlanTrip() {
               key={place.locationId}
               position={{ lat: place.latitude, lng: place.longitude }}
               title={place.locationName}
+              onClick={() => handleMarkerClick(place)}
             />
           ))}
         </GoogleMap>
       </div>
+
+      {/* 모달: 마커 클릭 시 상세 정보 */}
+      {isModalOpen && selectedPlace && (
+        <div className={styles.modalOverlay} onClick={handleCloseModal}>
+          <div
+            className={styles.modalContent}
+            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭 시 닫힘 방지
+          >
+            <button className={styles.closeButton} onClick={handleCloseModal}>
+              &times;
+            </button>
+            <h2>{selectedPlace.locationName}</h2>
+            <img
+              src={selectedPlace.placeImgUrl}
+              alt={selectedPlace.locationName}
+              className={styles.modalImage}
+            />
+            <p>
+              <strong>주소:</strong> {selectedPlace.formattedAddress}
+            </p>
+            <p>
+              <strong>평점:</strong> ⭐ {selectedPlace.googleRating}
+            </p>
+            <p>
+              <strong>전화번호:</strong> {selectedPlace.phoneNumber}
+            </p>
+            <p>
+              <strong>영업시간:</strong> {selectedPlace.openingHours}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
