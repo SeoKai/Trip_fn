@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./PlanTrip.module.scss";
 
 function PlanTrip() {
@@ -11,6 +11,7 @@ function PlanTrip() {
   });
 
   // 상태 변수
+  const navigate = useNavigate();
   const [allPlaces, setAllPlaces] = useState([]); // 전체 장소 목록
   const [center, setCenter] = useState({ lat: 35.6895, lng: 139.6917 }); // 지도 중심
   const [selectedPlace, setSelectedPlace] = useState(null); // 모달에 표시할 선택된 장소
@@ -103,8 +104,12 @@ function PlanTrip() {
         "http://localhost:5050/api/planner/save",
         plannerData
       );
+
+      const savedPlannerId = response.data;
+      console.log("저장된 플래너 ID ", savedPlannerId);
+
       alert("플랜이 성공적으로 저장되었습니다!");
-      console.log(response.data);
+      navigate(`/planner-details/${savedPlannerId}`);
     } catch (error) {
       console.error("플랜 저장 실패:", error);
       alert("플랜 저장 중 오류가 발생했습니다.");
